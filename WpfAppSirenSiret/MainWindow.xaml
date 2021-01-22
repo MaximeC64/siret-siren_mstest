@@ -1,0 +1,59 @@
+﻿<Window x:Class="WpfAppSirenSiret.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfAppSirenSiret"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="StackPanel">
+                <Setter Property="Margin" Value="0 0 0 20"/>
+            </Style>
+        </Grid.Resources>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock Text="Entrez un numéro de SIREN ou de SIRET" MinWidth="600"/>
+        </StackPanel>
+
+        <!-- Le Binding permet de faire le lien entre le champ de texte et la variable se trouvant dans le ViewModel -->
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <TextBox x:Name="txtValue" AutomationProperties.AutomationId="txtValue" Text="{Binding SirenSiretValue}" MinWidth="600" PreviewTextInput="txtValue_PreviewTextInput"/>
+        </StackPanel>
+
+        <!-- Le Binding permet de faire le lien entre le click du bouton et la déclenchement de la commande se trouvant dans le ViewModel -->
+        <Button Grid.Row="3" Grid.Column="1" Content="Vérifier" AutomationProperties.AutomationId="checkValueButton" Command="{Binding CommandCheck}">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding Text.Length, ElementName=txtValue, UpdateSourceTrigger=PropertyChanged}" Value="0"/>
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <StackPanel Grid.Row="4" Grid.Column="1">
+            <TextBlock x:Name="txtResult" AutomationProperties.AutomationId="txtResult" Text="{Binding Result}" MinWidth="600"/>
+        </StackPanel>
+    </Grid>
+</Window>
